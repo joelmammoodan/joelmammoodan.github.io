@@ -141,8 +141,8 @@ a{
   font-size: 14px;
   display: flex;
   align-items: center;
-  padding-left: 4px;
-  padding-right: 4px;
+  padding-left: 2px;
+  padding-right: 2px;
   background-color: #47444285;
   border-radius: 10px;
 }
@@ -257,5 +257,6 @@ footer{
   
 
 }
+
 
 
