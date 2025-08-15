@@ -13,7 +13,6 @@ h2{
 }
 
 
-
 html,body{
   height:100%;
   margin:0;
@@ -23,37 +22,14 @@ html,body{
   background-repeat: no-repeat;
 }
 
-
-/*ffe6a7   99582a   432818   bb9457   6f1d1b*/
-.hero-main1{
-  background-color: transparent;
-  color: #ffe6a7be;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding-left: 25px;
-  padding-top: 20%;
-  font-size: 50px;
-}
-
-.hero-main2{
-  background-color: transparent;
-  color: #ffe6a7;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin-left:auto;
-  margin-right: auto;
-  padding-left: 25px;
-  font-size: 50px;
-}
-
-
-
 .firsthero{
   background-color: #512f1637 ;
-  width:98%;
+  width:90%;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 2%;
   border-radius: 10px;
-  height: 90vh; /* full screen height */
+  height: fit-content; /* full screen height */
   display: flex;
 
 }
@@ -70,15 +46,27 @@ html,body{
   color: white;
   position: relative;
 }
+/*ffe6a7   99582a   432818   bb9457   6f1d1b*/
+.hero-main1{
+  background-color: transparent;
+  color: #ffe6a7be;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding-left: 25px;
+  padding-top: 20%;
+  font-size: 3rem;
+}
 
 .hero-contents{
   padding-left: 25px;
   padding-right:25px;
 }
 
+
+
+
 .hero-column2{
   background-color:#ffe6a7be;
-  height:80%;
+  aspect-ratio: 1/1;
   width:40%;
   margin-top: auto;
   margin-bottom: auto;
@@ -93,10 +81,23 @@ html,body{
   margin:0 auto;
   flex-direction: column;
   border-radius: 10px;
-  height: 90vh; /* full screen height */
+  height: 800px; /* full screen height */
   display: flex;
   color: white;
   position: relative;
+}
+
+
+
+
+.hero-main2{
+  background-color: transparent;
+  color: #ffe6a7;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-left:auto;
+  margin-right: auto;
+  padding-left: 25px;
+  font-size: 3rem;
 }
 
 .navbar{
@@ -105,7 +106,7 @@ html,body{
   gap:20px;
   background: #0f0700;
   padding:25px;
-  padding-left: 2%;
+  padding-left: 6%;
   margin-top: 10px;
   
 }
@@ -117,19 +118,11 @@ html,body{
 }
 
 .IconsRight{
-  margin-right: 6px;
   margin-left: auto;
   margin-top: 6px;
 }
 
-.IconsRight a{
-  margin-left:auto ;
-}
 
-a{
-  background-color: transparent;
-  text-decoration: none;
-}
 .NavItemsRight{
   background-color: transparent;
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -142,29 +135,29 @@ a{
   font-size: 14px;
   display: flex;
   align-items: center;
-  padding-left: 2px;
-  padding-right: 2px;
+  padding-right: 10px;
   background-color: #47444285;
   border-radius: 10px;
 }
 
-.second-hero-contents{
-  display:flex;
-  height: 100%;
-  width:100%
+
+
+
+.article-contents{
+  background-color:#ffe6a7be;
+  max-height: 100%;
+  width:95%;
+  overflow-y: auto;
+ 
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 10px;
+  margin-bottom: 10px;
 }
-
-.second-hero-contents-1{
-  background-color: #ffe6a7;
-  width: 50px;
-}
-
-
-
 
 
 #news-2 {
-  max-height: 90%;
+  height: 100%;
   overflow-y:auto;
   padding: 8px;
 }
@@ -177,13 +170,14 @@ a{
   gap: 10px;
   margin-bottom: 12px;
   font-size: 0.9rem;
+  box-sizing: border-box;
 }
 
 #news-2 .article img {
   width: 120px;       /* slightly smaller thumbnail */
   height: auto;
   border-radius: 6px;
-  flex-shrink: 0;    /* prevents shrinking */
+   /* prevents shrinking */
 }
 
 #news-2 .article a {
@@ -191,7 +185,8 @@ a{
   font-weight: bold;
   text-decoration: none;
   color: #222;
-  flex: 1;           /* text takes available space */
+  flex: 1 1 auto; /* ensures it shrinks if needed */
+  min-width: 0;          /* text takes available space */
 }
 
 #news-2 .article a:hover {
@@ -199,23 +194,6 @@ a{
 }
 
 
-
-
-
-
-
-
-
-.article-contents{
-  background-color:#ffe6a7be;
-  height:95%;
-  width:95%;
-  margin-top: auto;
-  margin-bottom: auto;
-  margin-left: auto;
-  margin-right: auto;
-  border-radius: 10px;
-}
 
 
 .footer_p{
@@ -230,16 +208,20 @@ footer{
 /* Mobile view: stack vertically, text first */
 @media(max-aspect-ratio: 1/1) {
   .firsthero {
-    height:100%;
     flex-direction: column;
-    padding-bottom: 2%; /* Stack them */
+    padding-bottom: 10%;/* Stack them */
   }
 
   .hero-column1 {
     margin-top: auto;
     margin-bottom: auto;
+    padding-bottom: 2%;
     width:100%;
     order: 1; /* Text stays on top */
+  }
+  .hero-main1{
+    margin-top: 2px;
+    text-align: center;
   }
 
   .hero-column2 {
@@ -258,9 +240,9 @@ footer{
 
  
   }
-  .article-contents{
-    height:60vh;
-  }
+ 
+  
+  
 
   
 

@@ -41,9 +41,27 @@ async function loadArticles(tag, containerId) {
   });
 }
 
-// Load AI into #feed
-loadArticles('artificial-intelligence', 'feed');
 
 // Load Robotics into #news-2
 loadArticles('robotics', 'news-2');
 
+
+function getGreeting() {
+  const now = new Date();
+  const hour = now.getHours(); // 0 - 23
+
+  if (hour >= 5 && hour < 12) {
+    return "Good morning";
+  } else if (hour >= 12 && hour < 17) {
+    return "Good afternoon";
+  } else if (hour >= 17 && hour < 21) {
+    return "Good evening";
+  } else {
+    return "Hello There";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const greetingElement = document.getElementById("greetings");
+  greetingElement.innerHTML = getGreeting() + "<br>I'm Joel Binoy";
+});
