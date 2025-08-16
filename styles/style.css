@@ -494,7 +494,7 @@ iframe{
   aspect-ratio: 3/2;
   margin:0 auto;
   border-radius:10px;
-  width:90%;
+  width:95%;
   display: block;
   margin-top: 5%;
 }
@@ -583,12 +583,12 @@ iframe{
 
   .weather-info{
     font-size: 10px;
-    margin-left: 20px;
+    margin-left: 30px;
   }
 
   .navbar a img{
-  width:15px;
-  height:15px;
+  width:25px;
+  height:25px;
   }
 
  
@@ -600,6 +600,8 @@ iframe{
     max-height: 15px;
     margin-left: 2% auto;
     margin-right: 10px;
+    gap:10px;
+    padding-right:15px ;
   }
 
   .navbar{
@@ -617,5 +619,4 @@ iframe{
 
 
   
-
 }
