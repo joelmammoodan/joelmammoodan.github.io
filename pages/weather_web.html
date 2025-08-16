@@ -2,7 +2,8 @@
 <html>
     <head>
         <title>Weather</title>
-        <script src="../scripts/script.js"></script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../styles/style.css">
     </head>
     <body>
@@ -13,26 +14,61 @@
         <a class="NavItemsRight" href='../pages/projects.html'>Projects</a>
        
         <div class="IconsRight">
-            <a  href=""><img src='/images/linkedin.png'></a>
-            <a href=""><img src='/images/email.png'></a>
+            <a class='Icons' href="https://www.linkedin.com/in/joel-binoy-348324286/"><img src='/images/linkedin.png'></a>
+            <a class='Icons' href="/pages/contact.html"><img src='/images/email.png'></a>
         </div>
-        <div class="weather-info" id="weather">
-            <p>Loading Weather...</p>
-        </div>
+        <a href="../pages/weather_web.html">
+            <div class="weather-info" id="weather">
+                <p>Loading..</p>
+            </div>
+        </a>
     </nav>
 
-    <div class="firsthero">
-        <div class="hero-column1">
-        <h1 class="hero-main1">Hero Section</h1>
-        <div>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        </div>
-        </div>
-        <div class="hero-column2">
-            <h1>Images here</h2>
-        </div>
-    </div>
+    <div class="weather-container">
+        <h1>Weather Info</h1>
 
+        <!-- Search -->
+        <form id="weatherForm">
+        <input type="text" id="locationInput" placeholder="Enter city..." required>
+        <button type="submit">Search</button>
+        </form>
+
+        <!-- Weather Output -->
+        <div id="weatherDetails" class="weather-details">
+            <div class='city-img'>
+                <h2 id="cityName"></h2>
+                <img id="weatherIcon" class="weather-icon" src="" alt="">
+                <h3 id="condition"></h3>
+            </div>
+            <div class="weather-others">
+                <div class="weather-item">
+                    <img src="../images/thermometer.png" alt="Temp" class="icon">
+                    <p id="temperature"></p>
+                </div>
+                <div class="weather-item">
+                    <img src="../images/humidity.png" alt="Humidity" class="icon">
+                    <p id="humidity"></p>
+                </div>
+                <div class="weather-item">
+                    <img src="../images/wind.png" alt="Wind" class="icon">
+                    <p id="wind"></p>
+                </div>
+                
+                
+                
+            </div>
+        </div>
+
+  </div>
+
+
+  
+
+    <footer>
+        <p class="footer_p">Joel Philip Binoy . RSET Kochi . 15/8/2025</p>
+    </footer>
+  
+    <script src="../scripts/script.js"></script>
 
     </body>
 </html>

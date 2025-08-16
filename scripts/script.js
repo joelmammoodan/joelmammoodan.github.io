@@ -14,11 +14,59 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}
       <img src="${iconUrl}" alt="Weather" class='weather-icon' width="30" height="30">
       <p>${data.main.temp}°C</p> 
     `;
+
+    
+
   })
   .catch(error => {
-    document.getElementById("weather").innerHTML = "⚠ Weather unavailable";
+    document.getElementById("weather").innerHTML = "⚠";
     console.error(error);
   });
+
+
+function loadWeather(city) {
+  fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
+    .then(response => response.json())
+    .then(data => {
+      const cityName = document.getElementById("cityName");
+      const temperature = document.getElementById("temperature");
+      const condition = document.getElementById("condition");
+      const humidity = document.getElementById("humidity");
+      const wind = document.getElementById("wind");
+      const pressure = document.getElementById("pressure");
+      const weatherIcon = document.getElementById("weatherIcon");
+
+      if (data.cod !== 200) {
+        // Just update texts, don’t destroy the structure
+        cityName.textContent = "❌ City not found";
+        temperature.textContent = "";
+        condition.textContent = "";
+        humidity.textContent = "";
+        wind.textContent = "";
+        pressure.textContent = "";
+        weatherIcon.style.display = "none";
+        return;
+      }
+
+      // Normal case → fill in details
+      cityName.textContent = data.name;
+      temperature.textContent = `${data.main.temp}°C`;
+      condition.textContent = `${data.weather[0].description}`;
+      humidity.textContent = `${data.main.humidity}%`;
+      wind.textContent = ` ${data.wind.speed} m/s`;
+
+      const iconCode = data.weather[0].icon;
+      const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+      weatherIcon.src = iconUrl;
+      weatherIcon.style.display = "inline-block";
+    })
+    .catch(error => {
+      console.error(error);
+      document.getElementById("cityName").textContent = "⚠ Error loading weather";
+    });
+}
+
+
 
 
 async function loadArticles(tag, containerId) {
@@ -65,3 +113,57 @@ document.addEventListener("DOMContentLoaded", () => {
   const greetingElement = document.getElementById("greetings");
   greetingElement.innerHTML = getGreeting() + "<br>I'm Joel Binoy";
 });
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    let slides = document.querySelectorAll('.slideshow .slide');
+    let dots = document.querySelectorAll('.dot');
+    let current = 0;
+
+    function showSlide(index) {
+        if (!slides[index] || !dots[index]) return; // safety check
+
+        slides[current].classList.remove('active');
+        dots[current].classList.remove('active');
+
+        current = index;
+
+        slides[current].classList.add('active');
+        dots[current].classList.add('active');
+    }
+
+    function showNextSlide() {
+        let next = (current + 1) % slides.length;
+        showSlide(next);
+    }
+
+    // Dot click
+    dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+            let index = parseInt(dot.getAttribute('data-index'));
+            showSlide(index);
+        });
+    });
+
+    // Initialize first slide
+    showSlide(0);
+
+    // Automatic slideshow every 3 seconds
+    setInterval(showNextSlide, 3000);
+});
+
+
+
+// Form handler
+document.getElementById("weatherForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const city = document.getElementById("locationInput").value;
+  loadWeather(city);
+});
+
+// Load a default city at start (e.g., Kochi)
+loadWeather("Kochi");
+
+
+
