@@ -99,11 +99,11 @@ function getGreeting() {
   const hour = now.getHours(); // 0 - 23
 
   if (hour >= 5 && hour < 12) {
-    return "Good morning";
+    return "Good Morning";
   } else if (hour >= 12 && hour < 17) {
-    return "Good afternoon";
+    return "Good Afternoon";
   } else if (hour >= 17 && hour < 21) {
-    return "Good evening";
+    return "Good Evening";
   } else {
     return "Hello There";
   }
