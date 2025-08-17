@@ -11,16 +11,7 @@ p,h1.h2,h3,h4,h5{
 
 
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px); /* optional: slight slide-up */
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+
 
 h2{
   color: #ffe6a7be;
@@ -211,6 +202,10 @@ html,body{
   padding-right: 10px;
   background-color: #47444285;
   border-radius: 10px;
+}
+
+.weather-info p{
+  padding-left: 10px;
 }
 
 
@@ -552,6 +547,17 @@ iframe{
   to { opacity: 1; transform: scale(1); }
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px); 
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 /* Mobile view: stack vertically, text first */
 @media(max-aspect-ratio: 1/1) {
@@ -585,6 +591,7 @@ iframe{
     font-size: 10px;
     margin-left: 30px;
   }
+  
 
   .navbar a img{
   width:25px;

@@ -1,7 +1,8 @@
 const apiKey="9e8be211c5f50add46e267040c972a3e"
-
 const city="Kochi"
 
+
+//used to fetch the data for the weather snippet 
 fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
   .then(response => response.json())
   .then(data => {
@@ -19,10 +20,13 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}
 
   })
   .catch(error => {
-    document.getElementById("weather").innerHTML = "⚠";
+    document.getElementById("weather").innerHTML = "<p>⚠</p>";
     console.error(error);
   });
 
+
+//function to call weather in the weather html page
+//kept 2 separate ones since both give different sets of data
 
 function loadWeather(city) {
   fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
@@ -68,15 +72,15 @@ function loadWeather(city) {
 
 
 
-
+//load the articles from dev.to to the div
 async function loadArticles(tag, containerId) {
-  const res = await fetch(`https://dev.to/api/articles?tag=${tag}&per_page=5`);
+  const res = await fetch(`https://dev.to/api/articles?tag=${tag}&per_page=10`);
   const data = await res.json();
 
   const container = document.getElementById(containerId);
 
   // Clear the container before adding new articles
-  container.innerHTML += ""; // keeping the <h2> in place
+  container.innerHTML += ""; 
 
   data.forEach(article => {
     const div = document.createElement('div');
@@ -94,6 +98,8 @@ async function loadArticles(tag, containerId) {
 loadArticles('robotics', 'news-2');
 
 
+
+//function for the greeting in main page
 function getGreeting() {
   const now = new Date();
   const hour = now.getHours(); // 0 - 23
@@ -115,7 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-
+//for the slideshow to occur
 document.addEventListener('DOMContentLoaded', () => {
     let slides = document.querySelectorAll('.slideshow .slide');
     let dots = document.querySelectorAll('.dot');
@@ -155,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-// Form handler
+// for the form 
 document.getElementById("weatherForm").addEventListener("submit", function (e) {
   e.preventDefault();
   const city = document.getElementById("locationInput").value;
