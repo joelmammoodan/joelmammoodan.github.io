@@ -373,6 +373,7 @@ section {
 .terminal-button.red {
   background: #ff5f56;
 }
+
 .terminal-button.red::after {
   background: url("data:image/svg+xml;utf8,<svg width='8' height='8' viewBox='0 0 8 8' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M2 2L6 6M6 2L2 6' stroke='%234d0000' stroke-width='1.2' stroke-linecap='round'/></svg>") center/contain no-repeat;
 }
@@ -380,6 +381,7 @@ section {
 .terminal-button.yellow {
   background: #ffbd2e;
 }
+
 .terminal-button.yellow::after {
   background: url("data:image/svg+xml;utf8,<svg width='8' height='8' viewBox='0 0 8 8' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M1.5 4H6.5' stroke='%235c4300' stroke-width='1.2' stroke-linecap='round'/></svg>") center/contain no-repeat;
 }
@@ -387,6 +389,7 @@ section {
 .terminal-button.green {
   background: #27c93f;
 }
+
 .terminal-button.green::after {
   background: url("data:image/svg+xml;utf8,<svg width='8' height='8' viewBox='0 0 8 8' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M2 2H4.5L2 4.5Z M6 6H3.5L6 3.5Z' fill='%23004d00'/></svg>") center/contain no-repeat;
 }
@@ -411,6 +414,7 @@ section {
   line-height: 1.2;
   min-height: 250px;
   white-space: pre-wrap;
+
 }
 
 .terminal-line {
@@ -761,7 +765,8 @@ a.square-item:hover {
   }
 
   .morph-spacer {
-    height: 125vh; /* Reduced from 150vh to make the gap a bit smaller */
+    height: 125vh;
+    /* Reduced from 150vh to make the gap a bit smaller */
   }
 
   /* Lower the nav dot and nav line using explicit TOP positioning */
@@ -794,22 +799,21 @@ a.square-item:hover {
     font-size: calc(clamp(2rem, 8vw, 3rem) - 1.5rem * var(--scroll-progress, 0));
     /* Start at 50vw, end at 5vw */
     left: calc(50vw - 45vw * var(--scroll-progress, 0));
-    top: calc(25vh - (25vh - 35px) * var(--scroll-progress, 0)); /* Visually lifted to 35px */
-    transform: translate(
-      calc(-50% * (1 - var(--scroll-progress, 0))), 
-      -50%
-    );
+    top: calc(25vh - (25vh - 35px) * var(--scroll-progress, 0));
+    /* Visually lifted to 35px */
+    transform: translate(calc(-50% * (1 - var(--scroll-progress, 0))),
+        -50%);
     text-align: center;
   }
-  
+
   .hero-socials {
-    top: calc(45vh - (45vh - 36px) * var(--scroll-progress, 0)); /* Visually lifted to 36px */
-    left: 50vw; /* Keep centered horizontally */
+    top: calc(45vh - (45vh - 36px) * var(--scroll-progress, 0));
+    /* Visually lifted to 36px */
+    left: 50vw;
+    /* Keep centered horizontally */
     gap: calc(10px - 5px * var(--scroll-progress, 0));
-    transform: translate(
-      -50%, 
-      -50%
-    );
+    transform: translate(-50%,
+        -50%);
   }
 
   .hero-socials .social-link,
@@ -845,13 +849,12 @@ a.square-item:hover {
   }
 
   .hero-weather {
-    top: calc(70vh - (70vh - 38px) * var(--scroll-progress, 0)); /* Visually lifted to 38px */
+    top: calc(70vh - (70vh - 38px) * var(--scroll-progress, 0));
+    /* Visually lifted to 38px */
     /* Start at 50vw, end at 5vw right */
     right: calc(50vw - 45vw * var(--scroll-progress, 0));
-    transform: translate(
-      calc(50% * (1 - var(--scroll-progress, 0))), 
-      -50%
-    );
+    transform: translate(calc(50% * (1 - var(--scroll-progress, 0))),
+        -50%);
   }
 
   /* Swap Terminal for Android Balloon */
@@ -867,12 +870,14 @@ a.square-item:hover {
 /* Android Balloon Styles */
 .android-balloon-track {
   position: absolute;
-  bottom: 0; /* Anchor to the bottom of the hero section */
+  bottom: 0;
+  /* Anchor to the bottom of the hero section */
   left: 0;
   width: 100%;
   display: flex;
   justify-content: center;
-  align-items: flex-end; /* Keep it at the bottom */
+  align-items: flex-end;
+  /* Keep it at the bottom */
   pointer-events: none;
   z-index: 10;
 }

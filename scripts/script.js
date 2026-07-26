@@ -289,7 +289,7 @@ document.addEventListener("DOMContentLoaded", () => {
             let left = (logo[i] || "").padEnd(34, " ");
             let right = info[i] || "";
             // Keep left colored green, let right be default or contain its own spans
-            lines.push(`<span style="color: #27c93f">${left}</span>  ${right}`);
+            lines.push(`<span style="color: #27c93f; letter-spacing: 2.5px;">${left}</span>  ${right}`);
         }
 
         return "> fastfetch\n\n" + lines.join('\n') + "\n\n> ";
