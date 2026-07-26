@@ -3,6 +3,37 @@ const city = "Kochi";
 
 document.addEventListener("DOMContentLoaded", () => {
 
+    // Celestial Sun/Moon mode for Navbar Circle
+    function updateCelestialHeroCircle(weatherData) {
+        const navbar = document.getElementById("navbar");
+        const navDot = document.getElementById("nav-dot");
+        if (!navbar) return;
+
+        let isDay = false;
+        if (weatherData && weatherData.sys && weatherData.sys.sunrise && weatherData.sys.sunset) {
+            const now = Math.floor(Date.now() / 1000);
+            isDay = (now >= weatherData.sys.sunrise && now < weatherData.sys.sunset);
+        } else {
+            const hour = new Date().getHours();
+            isDay = (hour >= 6 && hour < 18);
+        }
+
+        if (isDay) {
+            navbar.classList.add("sun-mode");
+            navbar.classList.remove("moon-mode");
+            navbar.setAttribute("title", "Daytime (Sun Mode)");
+            if (navDot) navDot.setAttribute("title", "Daytime (Sun Mode)");
+        } else {
+            navbar.classList.add("moon-mode");
+            navbar.classList.remove("sun-mode");
+            navbar.setAttribute("title", "Nighttime (Moon Mode)");
+            if (navDot) navDot.setAttribute("title", "Nighttime (Moon Mode)");
+        }
+    }
+
+    updateCelestialHeroCircle();
+    setInterval(() => updateCelestialHeroCircle(window.currentWeatherData), 60000);
+
     // 1. Fetch Weather for Navbar
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
         .then(response => response.json())
@@ -34,6 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
             window.currentWeatherCondition = condition;
             window.currentWeatherData = data;
+            updateCelestialHeroCircle(data);
             if (window.asciiRain && typeof window.asciiRain.setWeather === "function") {
                 window.asciiRain.setWeather(condition, data);
             }
@@ -687,6 +719,89 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Trigger wipe every 3 seconds
         setInterval(triggerWipe, 4000);
+    }
+
+    // Interactive Android Balloon Pop & Drop Animation (No clipping)
+    const androidBalloonSvg = document.getElementById("android-balloon-svg");
+    if (androidBalloonSvg) {
+        let isPopping = false;
+        let popCount = 0;
+        const balloonColors = ["#ff5f56", "#ffbd2e", "#27c93f", "#00d2ff", "#a29bfe", "#ff6b81", "#fd79a8", "#00cec9", "#ff9ff3", "#54a0ff"];
+        let currentColorIdx = 0;
+
+        androidBalloonSvg.addEventListener("click", () => {
+            if (isPopping) return;
+            isPopping = true;
+            popCount++;
+
+            // Easter egg: Invert website colors every 5 pops
+            if (popCount % 5 === 0) {
+                document.documentElement.classList.toggle("inverted-theme");
+            }
+
+            androidBalloonSvg.setAttribute("title", `Pops: ${popCount} (Every 5 pops inverts colors!)`);
+
+            const balloonGroup = document.getElementById("balloon-group");
+            const balloonCircle = document.getElementById("balloon-circle");
+            const balloonTriangle = document.getElementById("balloon-triangle");
+            const popLines = document.getElementById("balloon-pop-lines");
+            const fallingGroup = document.getElementById("android-falling-group");
+
+            // Step 1: Pop the balloon with burst lines
+            if (popLines) {
+                popLines.setAttribute("opacity", "1");
+                setTimeout(() => {
+                    popLines.setAttribute("opacity", "0");
+                }, 200);
+            }
+            if (balloonGroup) {
+                balloonGroup.style.transform = "scale(1.5)";
+                balloonGroup.style.opacity = "0";
+            }
+
+            // Step 2: Android drops down off-screen (no clipping!)
+            if (fallingGroup) {
+                fallingGroup.style.transition = "transform 0.9s cubic-bezier(0.55, 0.055, 0.675, 0.19)";
+                fallingGroup.style.transform = "translateY(140vh) rotate(35deg)";
+            }
+
+            // Step 3: Prepare new balloon off-screen and float back up!
+            setTimeout(() => {
+                currentColorIdx = (currentColorIdx + 1) % balloonColors.length;
+                const newColor = balloonColors[currentColorIdx];
+                if (balloonCircle) balloonCircle.setAttribute("fill", newColor);
+                if (balloonTriangle) balloonTriangle.setAttribute("fill", newColor);
+
+                androidBalloonSvg.style.transition = "none";
+                androidBalloonSvg.style.transform = "translateY(140vh)";
+
+                if (balloonGroup) {
+                    balloonGroup.style.transition = "none";
+                    balloonGroup.style.transform = "scale(1)";
+                    balloonGroup.style.opacity = "1";
+                }
+                if (fallingGroup) {
+                    fallingGroup.style.transition = "none";
+                    fallingGroup.style.transform = "translateY(0) rotate(0deg)";
+                }
+
+                setTimeout(() => {
+                    if (balloonGroup) {
+                        balloonGroup.style.transition = "transform 0.25s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.25s ease";
+                    }
+                    if (fallingGroup) {
+                        fallingGroup.style.transition = "transform 0.9s cubic-bezier(0.55, 0.055, 0.675, 0.19)";
+                    }
+                    androidBalloonSvg.style.transition = "transform 1.3s cubic-bezier(0.16, 1, 0.3, 1)";
+                    androidBalloonSvg.style.transform = "translateY(0)";
+
+                    setTimeout(() => {
+                        isPopping = false;
+                    }, 1300);
+                }, 50);
+
+            }, 1050);
+        });
     }
 
 });

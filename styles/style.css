@@ -26,6 +26,16 @@ body {
   overflow-x: hidden;
 }
 
+html {
+  transition: filter 0.8s ease, background-color 0.8s ease;
+  background-color: var(--bg-dark);
+}
+
+html.inverted-theme {
+  filter: invert(100%);
+  background-color: #ffffff;
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
@@ -71,6 +81,19 @@ body {
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 50%;
   transform-origin: center;
+  transition: background 0.8s ease, box-shadow 0.8s ease;
+}
+
+/* Sun Mode (Daytime - Full White Sun) */
+.navbar.sun-mode::before {
+  background: #ffffff;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.95), 0 0 32px rgba(255, 255, 255, 0.4);
+}
+
+/* Moon Mode (Nighttime - Full White Crescent Moon) */
+.navbar.moon-mode::before {
+  background: transparent;
+  box-shadow: inset -5px -2px 0 0 #ffffff, 0 0 14px rgba(255, 255, 255, 0.6);
 }
 
 .navbar::after {
@@ -657,6 +680,7 @@ a.square-item:hover {
 .contact-map iframe {
   border-radius: 12px;
   box-shadow: none;
+  filter: grayscale(100%) invert(92%) contrast(83%);
 }
 
 /* Footer */
@@ -741,9 +765,13 @@ a.square-item:hover {
 /* Responsive */
 @media (max-width: 900px) {
 
-  .about-grid,
-  .contact-info {
+  .about-grid {
     flex-direction: column;
+  }
+
+  .contact-info {
+    grid-template-columns: 1fr;
+    gap: 25px;
   }
 }
 

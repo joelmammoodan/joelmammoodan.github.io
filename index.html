@@ -115,44 +115,59 @@
             <div class="android-balloon-sticky-wrapper">
                 <div class="balloon-scroll-mover" id="balloon-scroll-mover">
                     <div class="balloon-sway">
-                        <svg width="100" height="220" viewBox="0 0 100 220" style="overflow: visible;">
+                        <svg id="android-balloon-svg" width="100" height="220" viewBox="0 0 100 220" style="overflow: visible; cursor: pointer; pointer-events: auto;" title="Click to pop!">
                             <!-- Balloon -->
-                            <circle cx="50" cy="40" r="30" fill="#ff5f56" />
-                            <polygon points="45,70 55,70 50,75" fill="#ff5f56" />
-                            <!-- String (Perfectly straight) -->
-                            <line x1="50" y1="75" x2="50" y2="92" stroke="white" stroke-width="1" />
-                            <!-- Android Group (Shifted right to meet string, rotated 45 deg to look like it's being pulled by the heavy apple) -->
-                            <g transform="translate(22, 0) rotate(45 28 92)">
-                                <!-- Android Head -->
-                                <path d="M35 110 A 15 15 0 0 1 65 110 Z" fill="#3DDC84" />
-                                <!-- Android Antennas -->
-                                <line x1="42" y1="98" x2="38" y2="90" stroke="#3DDC84" stroke-width="2"
-                                    stroke-linecap="round" />
-                                <line x1="58" y1="98" x2="62" y2="90" stroke="#3DDC84" stroke-width="2"
-                                    stroke-linecap="round" />
-                                <!-- Android Eyes -->
-                                <circle cx="43" cy="103" r="1.5" fill="white" />
-                                <circle cx="57" cy="103" r="1.5" fill="white" />
-                                <!-- Android Body -->
-                                <rect x="35" y="112" width="30" height="25" rx="3" fill="#3DDC84" />
-                                <!-- Android Arms -->
-                                <path d="M 33 115 L 28 92" stroke="#3DDC84" stroke-width="5" stroke-linecap="round"
-                                    fill="none" />
-                                <rect x="67" y="112" width="5" height="18" rx="2.5" fill="#3DDC84" />
-                                <!-- Android Legs -->
-                                <rect x="40" y="138" width="6" height="12" rx="3" fill="#3DDC84" />
-                                <rect x="54" y="138" width="6" height="12" rx="3" fill="#3DDC84" />
+                            <g id="balloon-group" style="transform-origin: 50px 40px; transition: transform 0.25s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.25s ease;">
+                                <circle id="balloon-circle" cx="50" cy="40" r="30" fill="#ff5f56" />
+                                <polygon id="balloon-triangle" points="45,70 55,70 50,75" fill="#ff5f56" />
+                                <!-- Pop Burst Lines (Hidden by default) -->
+                                <g id="balloon-pop-lines" opacity="0" stroke="white" stroke-width="2.5" stroke-linecap="round" style="transition: opacity 0.2s ease;">
+                                    <line x1="50" y1="5" x2="50" y2="-7" />
+                                    <line x1="75" y1="15" x2="84" y2="6" />
+                                    <line x1="85" y1="40" x2="97" y2="40" />
+                                    <line x1="75" y1="65" x2="84" y2="74" />
+                                    <line x1="25" y1="15" x2="16" y2="6" />
+                                    <line x1="15" y1="40" x2="3" y2="40" />
+                                    <line x1="25" y1="65" x2="16" y2="74" />
+                                </g>
+                            </g>
+                            <!-- Android + String + Apple (Falling Group) -->
+                            <g id="android-falling-group" style="transform-origin: 50px 75px; transition: transform 0.9s cubic-bezier(0.55, 0.055, 0.675, 0.19);">
+                                <!-- String (Perfectly straight) -->
+                                <line x1="50" y1="75" x2="50" y2="92" stroke="white" stroke-width="1" />
+                                <!-- Android Group (Shifted right to meet string, rotated 45 deg to look like it's being pulled by the heavy apple) -->
+                                <g transform="translate(22, 0) rotate(45 28 92)">
+                                    <!-- Android Head -->
+                                    <path d="M35 110 A 15 15 0 0 1 65 110 Z" fill="#3DDC84" />
+                                    <!-- Android Antennas -->
+                                    <line x1="42" y1="98" x2="38" y2="90" stroke="#3DDC84" stroke-width="2"
+                                        stroke-linecap="round" />
+                                    <line x1="58" y1="98" x2="62" y2="90" stroke="#3DDC84" stroke-width="2"
+                                        stroke-linecap="round" />
+                                    <!-- Android Eyes -->
+                                    <circle cx="43" cy="103" r="1.5" fill="white" />
+                                    <circle cx="57" cy="103" r="1.5" fill="white" />
+                                    <!-- Android Body -->
+                                    <rect x="35" y="112" width="30" height="25" rx="3" fill="#3DDC84" />
+                                    <!-- Android Arms -->
+                                    <path d="M 33 115 L 28 92" stroke="#3DDC84" stroke-width="5" stroke-linecap="round"
+                                        fill="none" />
+                                    <rect x="67" y="112" width="5" height="18" rx="2.5" fill="#3DDC84" />
+                                    <!-- Android Legs -->
+                                    <rect x="40" y="138" width="6" height="12" rx="3" fill="#3DDC84" />
+                                    <rect x="54" y="138" width="6" height="12" rx="3" fill="#3DDC84" />
 
-                                <!-- Apple Logo (Massive, pulling the android down) -->
-                                <g transform="translate(48, 126) scale(2.0)">
-                                    <!-- Apple body -->
-                                    <path
-                                        d="M 12 18 C 12 18 10 20 7.5 20 C 2.5 20 1 15 1 10 C 1 4 4 1 8.5 1 C 10.5 1 12 2 12 2 C 12 2 13.5 1 15.5 1 C 19 1 21 3.5 21 6.5 C 21 8.5 19.5 10 19.5 10 C 19.5 10 22 12.5 21 16 C 20 18.5 17.5 20 15 20 C 13.5 20 12 18 12 18 Z"
-                                        fill="white" />
-                                    <!-- Leaf -->
-                                    <path d="M 12 0 C 12 -3 15 -5 17 -5 C 17 -2 14 0 12 0 Z" fill="white" />
-                                    <!-- Bite -->
-                                    <circle cx="21.5" cy="8.5" r="5" fill="#0a0a0a" />
+                                    <!-- Apple Logo (Massive, pulling the android down) -->
+                                    <g transform="translate(48, 126) scale(2.0)">
+                                        <!-- Apple body -->
+                                        <path
+                                            d="M 12 18 C 12 18 10 20 7.5 20 C 2.5 20 1 15 1 10 C 1 4 4 1 8.5 1 C 10.5 1 12 2 12 2 C 12 2 13.5 1 15.5 1 C 19 1 21 3.5 21 6.5 C 21 8.5 19.5 10 19.5 10 C 19.5 10 22 12.5 21 16 C 20 18.5 17.5 20 15 20 C 13.5 20 12 18 12 18 Z"
+                                            fill="white" />
+                                        <!-- Leaf -->
+                                        <path d="M 12 0 C 12 -3 15 -5 17 -5 C 17 -2 14 0 12 0 Z" fill="white" />
+                                        <!-- Bite -->
+                                        <circle cx="21.5" cy="8.5" r="5" fill="#0a0a0a" />
+                                    </g>
                                 </g>
                             </g>
                         </svg>
