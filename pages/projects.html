@@ -10,50 +10,50 @@
     </head>
     <body>
     <nav class="navbar">
-      
-        <a class='NavItemsRight' href='../index.html'>Home</a>
-        <a class="NavItemsRight" href="../pages/profile.html">Profile</a>
-        <a class="NavItemsRight" href='../pages/projects.html'>Projects</a>
-       
-        <div class="IconsRight">
-            <a class='Icons' href="https://www.linkedin.com/in/joel-binoy-348324286/"><img src='/images/linkedin.png'></a>
-            <a class='Icons' href="/pages/contact.html"><img src='/images/email.png'></a>
+        <div class="nav-logo">
+            <a href="../index.html"><strong>Joel</strong> Binoy</a>
         </div>
-        <a href="../pages/weather_web.html">
-            <div class="weather-info" id="weather">
-                <p>Loading..</p>
-            </div>
-        </a>
+        <div class="nav-links">
+            <a class="nav-item" href="../index.html">Home</a>
+            <a class="nav-item" href="profile.html">Profile</a>
+            <a class="nav-item" href="projects.html">Projects</a>
+        </div>
+        <div class="nav-right">
+            <a class="nav-icon" href="https://www.linkedin.com/in/joel-binoy-348324286/"><img src="../images/linkedin.png" alt="LinkedIn"></a>
+            <a class="nav-icon" href="contact.html"><img src="../images/email.png" alt="Email"></a>
+            <a href="weather_web.html" class="weather-link">
+                <div class="weather-info" id="weather">
+                    <p>Loading..</p>
+                </div>
+            </a>
+        </div>
     </nav>
 
 
     <div class="Project">
         <h1 class="project-heading">Projects</h1>
-        <div class="project-items">
-            <a href='https://github.com/joelmammoodan/Banshee'><h1>Banshee</h1></a>
-            <p class="project-contents">An overglorified alarm clock system with physical switches and huge sirens to wake up sound sleepers,hence banshee.It is made using ESP32 and other sensors to accomodate different scenarios. Also there are future projects on adding radio modules and also surveillance system to monitor any crime in front of it and activate the siren, hence Banshee</p>
-
+        <div class="project-grid">
+            <div class="project-items">
+                <a href='https://github.com/joelmammoodan/Banshee' target="_blank"><h1>Banshee</h1></a>
+                <p class="project-contents">An overglorified alarm clock system with physical switches and huge sirens to wake up sound sleepers, hence banshee. It is made using ESP32 and other sensors to accomodate different scenarios.</p>
+            </div>
+            <div class="project-items">
+                <a href='https://github.com/joelmammoodan/-never-Hangman-problem' target="_blank"><h1>Hangman Problem</h1></a>
+                <p class="project-contents">This is a small project to basically solve every hangman game there is. It uses DFS search to find a solution and plays it.</p>
+            </div>
+            <div class="project-items">
+                <a href='https://github.com/joelmammoodan/readie-speakie' target="_blank"><h1>Readie-speakie</h1></a>
+                <p class="project-contents">Basically a small test project on learning chatbots and by giving it a document it can give a summary on it.</p>
+            </div>
+            <div class="project-items">
+                <a href='https://github.com/joelmammoodan/kinematics' target="_blank"><h1>SCARA-Kinematics</h1></a>
+                <p class="project-contents">A python program to perform forward and inverse kinematics based on a 2DOF SCARA arm. It can give the values to be inputted to the servo motors.</p>
+            </div>
+            <div class="project-items">
+                <a href='https://github.com/joelmammoodan/Person_detection' target="_blank"><h1>Person Detection</h1></a>
+                <p class="project-contents">A python program to detect people from a surveillance system using YOLO model v8. It can take input of a camera feed and if there is any person in it, it can send the image to an email.</p>
+            </div>
         </div>
-        <div class="project-items">
-                <a href='https://github.com/joelmammoodan/-never-Hangman-problem'><h1>Hangman Problem</h1></a>
-                <p class="project-contents">This is a small project to basically solve every hangam game there is. It uses DFS search to find a soltuion and plays it.However it cannot be used in real life since irl you cannot move back a step.</p>
-
-            </div>
-        <div class="project-items">
-                <a href='https://github.com/joelmammoodan/readie-speakie'><h1>Readie-speakie</h1></a>
-                <p class="project-contents">Basically a small test project on learning chatbots and by giving it a document it can give a summary on it</p>
-
-            </div>
-        <div class="project-items">
-                <a href='https://github.com/joelmammoodan/kinematics'><h1>SCARA-Kinematics</h1></a>
-                <p class="project-contents">A python program to perform forward and inverse kinematics based on a 2DOF SCARA arm. it can give the values to be inputted to the servo motors to move to the cartesian points of given. </p>
-
-         </div>
-         <div class="project-items">
-                <a href='https://github.com/joelmammoodan/Person_detection'><h1>Person Detection</h1></a>
-                <p class="project-contents">A python program to detect people from a surveillance system using YOLO model v8. It can take input of a camera feed and if there is any person in it, it can send the image to the required email. Tried custom training it and almost crashed my laptop(tip:use colab or kaggle) </p>
-
-         </div>
     </div>
 
     
