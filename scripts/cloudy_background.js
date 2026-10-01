@@ -39,16 +39,64 @@ class ASCIICloudyBackground extends ASCIIBackgroundBase {
         };
         this.house.totalClicks = this.house.clicksRemaining;
 
+        // Gyroscope / Device orientation tilt offsets
+        this.gyroOffset = { x: 0, y: 0 };
+        this.hasGyro = false;
+
         this.initClouds();
         this.initStars();
         this.initGroundAndFlora();
 
         // Bind interactive event handlers
         this.onMouseMove = this.onMouseMove.bind(this);
+        this.onTouchMove = this.onTouchMove.bind(this);
         this.onPointerDown = this.onPointerDown.bind(this);
+        this.onDeviceOrientation = this.onDeviceOrientation.bind(this);
 
         window.addEventListener("mousemove", this.onMouseMove, { passive: true });
+        window.addEventListener("touchmove", this.onTouchMove, { passive: true });
+        window.addEventListener("touchstart", this.onPointerDown, { passive: true });
         window.addEventListener("pointerdown", this.onPointerDown);
+        
+        // Listen to mobile device orientation (gyroscope)
+        if (window.DeviceOrientationEvent) {
+            // Check for iOS permission requirement if needed on first interaction
+            window.addEventListener("deviceorientation", this.onDeviceOrientation, { passive: true });
+        }
+    }
+
+    onDeviceOrientation(e) {
+        // gamma: Left-to-right tilt in degrees [-90, 90]
+        // beta: Front-to-back tilt in degrees [-180, 180]
+        if (e.gamma !== null && e.beta !== null) {
+            this.hasGyro = true;
+            // Normalize tilt: clamp and map to grid column / row offsets
+            const tiltX = Math.max(-45, Math.min(45, e.gamma));
+            const tiltY = Math.max(0, Math.min(60, e.beta - 25)); // resting phone angle ~25-45 deg
+
+            // Target smooth gyro offset in character columns/rows
+            this.gyroOffset.x = (tiltX / 45) * (this.columns * 0.28);
+            this.gyroOffset.y = ((tiltY - 20) / 40) * (this.rows * 0.16);
+        }
+    }
+
+    onTouchMove(e) {
+        if (!e.touches || e.touches.length === 0) return;
+        this.hasUserInteractedMouse = true;
+        const touch = e.touches[0];
+        const curCol = Math.floor(touch.clientX / this.characterWidth);
+        const curRow = Math.floor(touch.clientY / this.characterHeight);
+
+        const dCol = curCol - this.mousePos.col;
+        const dRow = curRow - this.mousePos.row;
+        const instantSpeed = Math.sqrt(dCol * dCol + dRow * dRow);
+
+        this.mouseSpeed = this.mouseSpeed * 0.4 + instantSpeed * 0.8;
+
+        this.prevMousePos.col = this.mousePos.col;
+        this.prevMousePos.row = this.mousePos.row;
+        this.mousePos.col = curCol;
+        this.mousePos.row = curRow;
     }
 
     onMouseMove(e) {
@@ -70,41 +118,77 @@ class ASCIICloudyBackground extends ASCIIBackgroundBase {
     }
 
     onPointerDown(e) {
+        // Request iOS gyroscope permission on user gesture if available
+        if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+            DeviceOrientationEvent.requestPermission().then(response => {
+                if (response === 'granted') {
+                    window.addEventListener("deviceorientation", this.onDeviceOrientation, { passive: true });
+                }
+            }).catch(() => {});
+        }
+
         if (this.house.isPopped || !this.options.enableFloatingHouse) return;
 
-        const clickCol = Math.floor(e.clientX / this.characterWidth);
-        const clickRow = Math.floor(e.clientY / this.characterHeight);
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        const isTouch = !!e.touches || e.pointerType === 'touch';
+
+        const clickCol = Math.floor(clientX / this.characterWidth);
+        const clickRow = Math.floor(clientY / this.characterHeight);
+
+        // Track touch position as well for evasion
+        this.hasUserInteractedMouse = true;
+        this.mousePos.col = clickCol;
+        this.mousePos.row = clickRow;
+        this.mouseSpeed = 4.0; // trigger immediate evasion impulse
 
         const rootCol = Math.floor(this.house.xCol);
         const rootRow = Math.floor(this.house.yRow + this.house.bobOffset);
 
-        // Precise Balloon Bouquet dimensions
+        // Precise Balloon Bouquet dimensions (touch gets larger comfortable hitbox)
         const shrink = this.house.balloonShrinkRatio;
-        const clusterRadiusX = Math.max(2, 7.5 * shrink);
-        const clusterRadiusY = Math.max(2, 4.8 * shrink);
+        const touchMultiplier = isTouch ? 1.6 : 1.0;
+        const clusterRadiusX = Math.max(2.5, 7.5 * shrink * touchMultiplier);
+        const clusterRadiusY = Math.max(2.5, 4.8 * shrink * touchMultiplier);
         const clusterCenterCol = rootCol;
         const clusterCenterRow = rootRow - Math.floor(8 * shrink);
 
-        // Exact ellipse hit detection (strictly inside the balloon canopy only, not empty space or house)
+        // Ellipse hit detection
         const dCol = (clickCol - clusterCenterCol) / clusterRadiusX;
         const dRow = (clickRow - clusterCenterRow) / clusterRadiusY;
         const distSq = dCol * dCol + dRow * dRow;
 
-        // Must be strictly within the balloon perimeter (<= 1.0)
-        if (distSq <= 1.0 && clickRow <= rootRow - 3) {
+        // Inside balloon perimeter
+        if (distSq <= 1.0 && clickRow <= (rootRow - (isTouch ? 1 : 3))) {
             this.handleBalloonClick(clickCol, clickRow);
         }
+    }
+
+    triggerHapticRumble(type = 'pop') {
+        if (!navigator.vibrate) return;
+        try {
+            if (type === 'pop') {
+                // Multi-pulse flutter rumble simulating multiple balloons popping in a bunch
+                navigator.vibrate([25, 20, 35, 25, 45]);
+            } else if (type === 'crash') {
+                // Heavy landing rumble
+                navigator.vibrate([60, 40, 90, 50, 120]);
+            }
+        } catch (_) {}
     }
 
     handleBalloonClick(clickCol, clickRow) {
         this.house.clicksRemaining--;
         this.house.balloonShrinkRatio = Math.max(0.2, this.house.clicksRemaining / this.house.totalClicks);
 
+        // Haptic rumble vibration for multiple balloons bursting
+        this.triggerHapticRumble('pop');
+
         // Spawn pop sparkle particles for this click
         const popChars = ["*", "x", "+", "°", "·", "!", "%"];
         const colors = ["#FF595E", "#FFCA3A", "#8AC926", "#1982C4", "#FF924C", "#FFFFFF"];
-        for (let i = 0; i < 8; i++) {
-            const angle = (Math.PI * 2 * i) / 8 + (Math.random() * 0.4);
+        for (let i = 0; i < 10; i++) {
+            const angle = (Math.PI * 2 * i) / 10 + (Math.random() * 0.4);
             const speed = 4 + Math.random() * 8;
             this.poppedParticles.push({
                 x: clickCol,
@@ -291,10 +375,16 @@ class ASCIICloudyBackground extends ASCIIBackgroundBase {
                 let targetX = (this.columns * 0.5) + Math.sin(time * 0.35 + 1.2) * (this.columns * 0.32) + Math.cos(time * 0.18) * (this.columns * 0.15);
                 let targetY = (this.rows * 0.28) + Math.cos(time * 0.42 + 0.8) * (this.rows * 0.14) + Math.sin(time * 0.2) * (this.rows * 0.06);
 
+                // Apply mobile gyroscope / device tilt influence
+                if (this.hasGyro) {
+                    targetX += this.gyroOffset.x;
+                    targetY += this.gyroOffset.y;
+                }
+
                 let dynamicEaseSpeedX = this.house.baseSpeedX;
                 let dynamicEaseSpeedY = this.house.baseSpeedY;
 
-                // Dynamic speed-matched evasion
+                // Dynamic speed-matched evasion from mouse / touch
                 if (this.hasUserInteractedMouse) {
                     const dxCursor = this.house.xCol - this.mousePos.col;
                     const dyCursor = this.house.yRow - this.mousePos.row;
@@ -327,9 +417,10 @@ class ASCIICloudyBackground extends ASCIIBackgroundBase {
                 this.house.xCol += (targetX - this.house.xCol) * dynamicEaseSpeedX;
                 this.house.yRow += (targetY - this.house.yRow) * dynamicEaseSpeedY;
 
-                // Dynamic tilt based on evasion acceleration
+                // Dynamic tilt based on evasion acceleration + gyro tilt
                 const dx = targetX - this.house.xCol;
-                this.house.tilt = Math.max(-0.35, Math.min(0.35, dx * 0.03));
+                const gyroTiltInfluence = this.hasGyro ? (this.gyroOffset.x * 0.02) : 0;
+                this.house.tilt = Math.max(-0.4, Math.min(0.4, dx * 0.03 + gyroTiltInfluence));
             } else if (!this.house.isGrounded) {
                 // Free fall physics
                 this.house.fallVelocity += 35 * seconds; // acceleration
@@ -341,6 +432,9 @@ class ASCIICloudyBackground extends ASCIIBackgroundBase {
                     this.house.yRow = groundRow;
                     this.house.isGrounded = true;
                     this.house.fallVelocity = 0;
+
+                    // Heavy crash landing rumble
+                    this.triggerHapticRumble('crash');
 
                     // Landing impact dust particles
                     const dustChars = [".", ",", "*", "o"];
@@ -542,7 +636,10 @@ class ASCIICloudyBackground extends ASCIIBackgroundBase {
     destroy() {
         super.destroy();
         window.removeEventListener("mousemove", this.onMouseMove);
+        window.removeEventListener("touchmove", this.onTouchMove);
+        window.removeEventListener("touchstart", this.onPointerDown);
         window.removeEventListener("pointerdown", this.onPointerDown);
+        window.removeEventListener("deviceorientation", this.onDeviceOrientation);
     }
 }
 
