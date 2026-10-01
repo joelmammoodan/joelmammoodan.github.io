@@ -66,7 +66,9 @@ document.addEventListener("DOMContentLoaded", () => {
             window.currentWeatherCondition = condition;
             window.currentWeatherData = data;
             updateCelestialHeroCircle(data);
-            if (window.asciiRain && typeof window.asciiRain.setWeather === "function") {
+            if (window.backgroundManager && typeof window.backgroundManager.setWeather === "function") {
+                window.backgroundManager.setWeather(condition, data);
+            } else if (window.asciiRain && typeof window.asciiRain.setWeather === "function") {
                 window.asciiRain.setWeather(condition, data);
             }
         })
@@ -106,7 +108,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         iconEl.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
                     }
 
-                    if (window.asciiRain && typeof window.asciiRain.setWeather === "function") {
+                    if (window.backgroundManager && typeof window.backgroundManager.setWeather === "function") {
+                        window.backgroundManager.setWeather(data.weather[0].main, data);
+                    } else if (window.asciiRain && typeof window.asciiRain.setWeather === "function") {
                         window.asciiRain.setWeather(data.weather[0].main, data);
                     }
                 })
